@@ -1,0 +1,27 @@
+math DECRYPT = 1 # 1 - decrypt file, 0 - encrypt file 
+
+get NAME filename
+string KEY = "dsf85gfh485jkuy7f4865dfz456kyuk8"
+log MEMORY_FILE 0 0
+math MEM = -1
+
+if DECRYPT = 1
+	string NAME + "_decrypted"
+	comtype base64
+	
+	get SIZE asize
+	clog MEMORY_FILE 0 SIZE SIZE
+	get SIZE asize MEM
+	encryption aes KEY "" 0 32
+	log NAME 0 SIZE MEM
+	
+elif DECRYPT = 0
+	string NAME + "_encrypted"
+	comtype base64_compress
+	
+	get SIZE asize
+	encryption aes KEY "" 1 32
+	log MEMORY_FILE 0 SIZE
+	encryption "" ""
+	clog NAME 0 SIZE SIZE MEM
+endif
